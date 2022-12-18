@@ -10,7 +10,7 @@ function Overlay({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm"
+      className="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-sm"
       onClick={() => {
         closeModal(false);
         document.body.style.overflow = "auto";
