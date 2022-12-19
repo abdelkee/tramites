@@ -38,16 +38,39 @@ function NewNote({
     }
   };
 
+  const addSection = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (!title) return;
+      const capTitle = title.charAt(0).toUpperCase() + title.slice(1);
+      const { error } = await supabase
+        .from("sections")
+        .insert([{ title: capTitle }]);
+      if (error) return alert("Error creating the section!");
+      toast.success("Section added successfully!");
+      router.replace("/");
+    } catch (error) {
+      return alert("Error creating the section!");
+    } finally {
+      setTitle("");
+      setLoading(false);
+      closeModal(false);
+      document.body.style.overflow = "auto";
+    }
+  };
+
+  //* ---- JSX
   return (
     <motion.form
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed z-50 flex items-center justify-between w-10/12 space-x-2 -translate-x-1/2 top-40 left-1/2"
-      onSubmit={addNote}
+      className="fixed flex items-center justify-between space-x-2 z-50 w-10/12 -translate-x-1/2 top-40 left-1/2"
+      onSubmit={addSection}
     >
       <input
         type="text"
-        placeholder="Que tramite es ..."
+        placeholder="Nueva seccion ..."
         className="flex-1 p-4 rounded focus:outline-none focus:ring focus:ring-slate-500"
         autoFocus
         onChange={(e) => setTitle(e.target.value)}

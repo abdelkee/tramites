@@ -17,6 +17,7 @@ function NoteCard({ note }: { note: NoteType }) {
   //* ---- STATES
   const [isChecked, setIsChecked] = useState(note.checked);
   const [loading, setLoading] = useState(false);
+
   //* ---- FUNCTIONS
   const toggleNote = async () => {
     setIsChecked(!isChecked);
@@ -45,15 +46,13 @@ function NoteCard({ note }: { note: NoteType }) {
         <motion.section
           drag={"x"}
           dragConstraints={{ right: 100, left: 0 }}
-          className={`flex z-20 items-center justify-between relative w-full p-4 bg-white border rounded-lg ${
-            isChecked
-              ? "shadow-none border-slate-400"
-              : "shadow-md border-slate-300 shadow-orange-600/10"
+          className={`flex z-20 items-center justify-between relative w-full p-4 border-t border-t-blue-200 ${
+            isChecked ? "line-through" : ""
           }`}
         >
           <p
             className={`w-3/4 ${
-              isChecked ? "text-slate-400" : "text-slate-800"
+              isChecked ? "text-slate-500" : "text-slate-800"
             }`}
           >
             {note.title}
@@ -62,8 +61,8 @@ function NoteCard({ note }: { note: NoteType }) {
             onClick={toggleNote}
             className={`grid w-10 h-10 ${
               isChecked
-                ? "text-green-600 shadow-none border border-green-200"
-                : "text-orange-600 shadow-md border border-slate-50 animate-pulse"
+                ? "text-green-600 border border-green-300"
+                : "text-orange-600 border border-orage-100"
             } bg-white rounded-full place-items-center`}
           >
             {isChecked ? (
@@ -75,7 +74,7 @@ function NoteCard({ note }: { note: NoteType }) {
         </motion.section>
 
         {/* //* delete button */}
-        <button
+        {/* <button
           className="p-4 border z-10 w-24 absolute left-0 top-0 h-full rounded-lg bg-red-500 grid place-items-center text-slate-50 active:focus:bg-red-600"
           onClick={deleteNote}
         >
@@ -84,7 +83,7 @@ function NoteCard({ note }: { note: NoteType }) {
           ) : (
             <MdAutorenew size={"24px"} className="animate-spin" />
           )}
-        </button>
+        </button> */}
       </div>
     </>
   );
