@@ -59,18 +59,13 @@ function page({
   sections: SectionType[];
   notesBySection: NoteType[][];
 }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   return (
     <>
       {/* <Header completed={completedNotes} pending={pendingNotes} /> */}
       <SectionHeader />
-      <SectionsList
-        sections={sections}
-        notesBySection={notesBySection}
-        openModal={setModalIsOpen}
-      />
-      <FAB openModal={setModalIsOpen} />
-      <Modal isOpen={modalIsOpen} closeModal={setModalIsOpen} />
+      <SectionsList sections={sections} notesBySection={notesBySection} />
+      <FAB />
+      <Modal />
       <Toaster />
     </>
   );
