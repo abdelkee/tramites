@@ -1,10 +1,10 @@
-import { createContext, SetStateAction, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 import appReducer, { ActionType, AppState } from "./appReducer";
 
 const initialState: AppState = {
   modalShow: false,
   isSection: true,
-  selectedSection: "",
+  selectedSection: undefined,
 };
 
 export const AppContext = createContext<AppState>(initialState);
