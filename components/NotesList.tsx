@@ -9,17 +9,12 @@ function NotesList({ notes }: { notes: NoteType[] }) {
       initial={{ height: 0 }}
       animate={{ height: "auto" }}
       exit={{ height: 0 }}
-      className="p-4 grid grid-cols-1 gap-2 bg-slate-50 rounded-md"
+      className="grid grid-cols-1 gap-2 p-4 rounded-md bg-slate-50"
     >
       {notes.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}
     </motion.section>
-    // <main className="grid grid-cols-1 gap-4 p-4 mb-16 mt-28 overflow-x-hidden">
-    //   {notes?.map((note) => (
-    //     <NoteCard key={note.id} note={note} />
-    //   ))}
-    // </main>
   );
 }
 

@@ -1,22 +1,23 @@
-import { createContext, SetStateAction, useState } from "react";
+import { createContext, SetStateAction, useReducer, useState } from "react";
+import appReducer, { ActionType, AppState } from "./appReducer";
 
-interface AppContextType {
-  modalIsOpen: boolean;
-}
+const initialState: AppState = {
+  modalShow: false,
+  isSection: true,
+  selectedSection: "",
+};
 
-export const AppContext = createContext<AppContextType>({
-  modalIsOpen: false,
-});
+export const AppContext = createContext<AppState>(initialState);
 
-export const DispatchAppContext = createContext<
-  React.Dispatch<SetStateAction<boolean>>
->(() => {});
+export const DispatchAppContext = createContext<React.Dispatch<ActionType>>(
+  () => {}
+);
 
 function ContextProvider({ children }: { children: JSX.Element }) {
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [state, dispatch] = useReducer(appReducer, initialState);
   return (
-    <AppContext.Provider value={{ modalIsOpen }}>
-      <DispatchAppContext.Provider value={setModalIsOpen}>
+    <AppContext.Provider value={state}>
+      <DispatchAppContext.Provider value={dispatch}>
         {children}
       </DispatchAppContext.Provider>
     </AppContext.Provider>

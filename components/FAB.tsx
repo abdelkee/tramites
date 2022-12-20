@@ -1,15 +1,15 @@
-import { SetStateAction } from "react";
 import { MdNoteAlt } from "react-icons/md";
+import { useDispatch } from "../context/useProvider";
 
-function FAB({
-  openModal,
-}: {
-  openModal: React.Dispatch<SetStateAction<boolean>>;
-}) {
+function FAB() {
+  const dispatch = useDispatch();
   return (
     <button
-      className="fixed z-30 grid w-14 h-14 text-white rounded-full shadow-md bottom-4 right-4 bg-slate-900 place-items-center"
-      onClick={() => openModal(true)}
+      className="fixed z-30 grid text-white rounded-full shadow-md w-14 h-14 bottom-4 right-4 bg-slate-900 place-items-center"
+      onClick={() => {
+        dispatch({ type: "SETSECTION", payload: true });
+        dispatch({ type: "SETMODALSHOW", payload: true });
+      }}
     >
       <MdNoteAlt size="24px" />
     </button>
