@@ -16,8 +16,7 @@ const getSections = async () => {
     error: secError,
   }: { data: SectionType[] | null; error: any } = await supabase
     .from("sections")
-    .select("*")
-    .order("title");
+    .select("*");
   if (secError) return [{ error: secError.message }];
   return sections as SectionType[];
 };
@@ -28,34 +27,9 @@ const getAllNotes = async () => {
     error: noteError,
   }: { data: SectionType[] | null; error: any } = await supabase
     .from("todos")
-    .select("*")
-    .order("title");
+    .select("*");
   if (noteError) return [{ error: noteError.message }];
   return notes as NoteType[];
-};
-
-const getNotes = async (section_id: string) => {
-  const {
-    data: notes,
-    error: noteError,
-  }: { data: NoteType[] | null; error: any } = await supabase
-    .from("todos")
-    .select()
-    .eq("parent", section_id)
-    .order("title");
-  return { notes: notes as NoteType[], noteError };
-};
-
-const getSubNotes = async (note_id: string) => {
-  const {
-    data: subNotes,
-    error: subNoteError,
-  }: { data: SubNoteType[] | null; error: any } = await supabase
-    .from("sub_todos")
-    .select()
-    .eq("parent", note_id)
-    .order("title");
-  return { subNotes: subNotes as SubNoteType[], subNoteError };
 };
 
 export async function getServerSideProps() {
@@ -91,19 +65,6 @@ export async function getServerSideProps() {
 }
 
 //* ---- JSX
-
-// function page({
-//   sections,
-//   notes,
-// }: {
-//   sections: SectionType[];
-//   notes: NoteType[];
-// }) {
-//   console.log(sections);
-//   console.log(notes);
-//   return <SectionHeader />;
-// }
-
 function page({
   sections,
   notes,
