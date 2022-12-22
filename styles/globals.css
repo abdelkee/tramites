@@ -4,8 +4,23 @@
 
 body {
     background-color: #E2E8F0;
+    
 }
 
 button, a {
     -webkit-tap-highlight-color: transparent
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.select-none {
+    user-select: none;
 }

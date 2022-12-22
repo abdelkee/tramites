@@ -3,7 +3,8 @@ export interface NoteType {
     title: string
     checked: boolean
     created_at: string
-    section: SectionType
+    parent: SectionType
+    has_children: boolean
     who: 'Abdel' | 'Belkys'
     where: 'Marruecos' | 'Ecuador'
 }
@@ -17,3 +18,5 @@ export interface NotesBySectionType {
     sectionTitle: string;
     sectionNotes: NoteType[]
 }
+
+export type SubNoteType = Omit<NoteType, 'has_children'>

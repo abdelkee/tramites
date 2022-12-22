@@ -1,23 +1,11 @@
-import { NoteType, SectionType } from "../Types";
+import { NoteType, SectionType, SubNoteType } from "../Types";
 import SectionCard from "./SectionCard";
 
-function SectionsList({
-  sections,
-  notesBySection,
-}: {
-  sections: SectionType[];
-  notesBySection: NoteType[][];
-}) {
+function SectionsList({ sections }: { sections: SectionType[] }) {
   return (
-    <main className="grid grid-cols-1 gap-4 p-4 mb-16 overflow-x-hidden mt-28">
+    <main className="flex mt-28 space-x-4 overflow-auto scrollbar-hide p-4 ">
       {sections?.map((section, i) => {
-        return (
-          <SectionCard
-            key={section.id}
-            section={section}
-            notes={notesBySection[i]}
-          />
-        );
+        return <SectionCard key={section.id} section={section} />;
       })}
     </main>
   );

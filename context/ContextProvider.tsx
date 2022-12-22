@@ -5,6 +5,8 @@ const initialState: AppState = {
   modalShow: false,
   isSection: true,
   selectedSection: undefined,
+  revalidateNotes: false,
+  revalidateSubNotes: false,
 };
 
 export const AppContext = createContext<AppState>(initialState);

@@ -1,69 +1,26 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { MdAdd, MdArrowCircleDown, MdArrowCircleUp } from "react-icons/md";
-import { NoteType, SectionType } from "../Types";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import NotesList from "./NotesList";
-import { useDispatch } from "../context/useProvider";
+import { SectionType } from "../Types";
+import { useDispatch, useSelector } from "../context/useProvider";
 
-function SectionCard({
-  section,
-  notes,
-}: {
-  section: SectionType;
-  notes: NoteType[];
-}) {
-  const router = useRouter();
+function SectionCard({ section }: { section: SectionType }) {
   const dispatch = useDispatch();
-
-  //* ---- STATES
-  const [loading, setLoading] = useState(false);
-  const [isSectionOpen, setIsSectionOpen] = useState(false);
+  const { selectedSection } = useSelector();
 
   //* ---- FUNCTIONS
-  return (
-    <div className="relative bg-white rounded-lg bg-slate-50">
-      {/* //* ---- card face */}
-      <motion.section
-        className={`flex z-20 items-center justify-between relative w-full p-4 bg-slate-600 border-b-2 border-b-slate-800 rounded-lg shadow-md `}
-      >
-        <p className={`w-3/4 text-stone-50 font-semibold tracking-wider`}>
-          {section.title}
-        </p>
-        <div className="flex space-x-4">
-          {isSectionOpen && (
-            <button
-              className={`grid w-10 h-10 bg-transparent text-stone-50 rounded-full place-items-center`}
-              onClick={() => {
-                dispatch({ type: "SETSECTION", payload: false });
-                dispatch({
-                  type: "SETSELECTEDSECTION",
-                  payload: section,
-                });
-                dispatch({ type: "SETMODALSHOW", payload: true });
-              }}
-            >
-              <MdAdd size={"24px"} />
-            </button>
-          )}
-          <button
-            onClick={() => setIsSectionOpen(!isSectionOpen)}
-            className={`grid w-10 h-10 bg-transparent text-stone-50 rounded-full place-items-center`}
-          >
-            {!isSectionOpen ? (
-              <MdArrowCircleDown size="24px" />
-            ) : (
-              <MdArrowCircleUp size="24px" />
-            )}
-          </button>
-        </div>
-      </motion.section>
+  const handleClick = () => {
+    dispatch({ type: "SETSELECTEDSECTION", payload: section });
+  };
 
-      {/* //* ---- card body */}
-      <AnimatePresence>
-        {isSectionOpen && <NotesList notes={notes} />}
-      </AnimatePresence>
-    </div>
+  return (
+    <button
+      onClick={handleClick}
+      className={`flex ${
+        selectedSection?.id === section.id
+          ? "bg-yellow-400 shadow-none border-yellow-500"
+          : "bg-slate-50 border-slate-200 shadow-md"
+      } z-20 text-slate-900 font-semibold tracking-wider items-center select-none justify-between relative w-full py-2 px-4 text-center rounded-lg border active:opacity-80`}
+    >
+      {section.title}
+    </button>
   );
 }
 
