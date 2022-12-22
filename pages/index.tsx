@@ -4,10 +4,10 @@ import { supabase } from "../utils/supabaseClient";
 import { NoteType, SectionType, SubNoteType } from "../Types";
 import { Toaster } from "react-hot-toast";
 import SectionsList from "../components/SectionsList";
-import SectionHeader from "../components/SectionHeader";
 import NotesList from "../components/NotesList";
 import { useEffect } from "react";
 import { useDispatch } from "../context/useProvider";
+import Header from "../components/Header";
 
 //* --- --- SERVER SIDE
 const getSections = async () => {
@@ -35,43 +35,17 @@ const getAllNotes = async () => {
 export async function getServerSideProps() {
   const sections = await getSections();
   const notes = await getAllNotes();
-  // if (secError) throw new Error(secError.message);
-  // const { notes, noteError } = await getAllNotes();
-  // if (noteError) throw new Error(noteError.message);
-
-  // const notesBySection = await Promise.all(
-  //   sections.map(async (section) => {
-  //     const { notes, noteError } = await getNotes(section.id);
-  //     if (noteError) throw new Error(noteError.message);
-  //     return notes;
-  //   })
-  // );
-
-  // const subNotesByNote = await Promise.all(
-  //   notes.map(async (note) => {
-  //     const { subNotes, subNoteError } = await getSubNotes(note.id);
-  //     if (subNoteError) throw new Error(subNoteError.message);
-  //     return subNotes;
-  //   })
-  // );
 
   return {
     props: {
       sections,
       notes,
-      // subNotesByNote,
     },
   };
 }
 
 //* ---- JSX
-function page({
-  sections,
-  notes,
-}: {
-  sections: SectionType[];
-  notes: NoteType[];
-}) {
+function page({ sections }: { sections: SectionType[] }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: "SETSELECTEDSECTION", payload: sections[0] });
@@ -80,7 +54,7 @@ function page({
   return (
     <>
       {/* <Header completed={completedNotes} pending={pendingNotes} /> */}
-      <SectionHeader />
+      <Header />
       <SectionsList sections={sections} />
       <NotesList />
       <FAB />

@@ -3,8 +3,9 @@ import appReducer, { ActionType, AppState } from "./appReducer";
 
 const initialState: AppState = {
   modalShow: false,
-  isSection: true,
+  member: "note",
   selectedSection: undefined,
+  selectedNote: undefined,
   revalidateNotes: false,
   revalidateSubNotes: false,
 };

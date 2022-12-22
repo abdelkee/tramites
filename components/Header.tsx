@@ -1,13 +1,18 @@
-function Header({
-  completed,
-  pending,
-}: {
-  completed: number;
-  pending: number;
-}) {
+import { MdAdd } from "react-icons/md";
+import { useDispatch } from "../context/useProvider";
+
+function Header() {
+  const dispatch = useDispatch();
+  //   {
+  //   completed,
+  //   pending,
+  // }: {
+  //   completed: number;
+  //   pending: number;
+  // }
   return (
-    <header className="fixed top-0 left-0 z-30 flex items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
-      {completed === 0 && pending === 0 ? (
+    <header className="fixed flex-row-reverse top-0 left-0 z-30 flex items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
+      {/* {completed === 0 && pending === 0 ? (
         <p className="text-center w-full">No hay tramites *-*</p>
       ) : (
         <>
@@ -24,7 +29,16 @@ function Header({
             </p>
           </section>
         </>
-      )}
+      )} */}
+      <button
+        className=""
+        onClick={() => {
+          dispatch({ type: "SETMEMBER", payload: "section" });
+          dispatch({ type: "SETMODALSHOW", payload: true });
+        }}
+      >
+        <MdAdd size={"24px"} />
+      </button>
     </header>
   );
 }

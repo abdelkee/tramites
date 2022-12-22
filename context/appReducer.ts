@@ -1,17 +1,19 @@
-import { SectionType } from "../Types";
+import { NoteType, SectionType } from "../Types";
 
 export interface AppState {
     modalShow: boolean;
-    isSection: boolean;
+    member: 'section' | 'note' | 'subNote';
     selectedSection?: SectionType
+    selectedNote?: NoteType
     revalidateNotes: boolean
     revalidateSubNotes: boolean
 }
 
 export type ActionType =
     | { type: 'SETMODALSHOW', payload: AppState['modalShow'] }
-    | { type: 'SETSECTION', payload: AppState['isSection'] }
+    | { type: 'SETMEMBER', payload: AppState['member'] }
     | { type: 'SETSELECTEDSECTION', payload: AppState['selectedSection'] }
+    | { type: 'SETSELECTEDNOTE', payload: AppState['selectedNote'] }
     | { type: 'REVALIDATENOTES' }
     | { type: 'REVALIDATESUBNOTES' }
 
@@ -22,15 +24,20 @@ function appReducer(state: AppState, action: ActionType) {
                 ...state,
                 modalShow: action.payload,
             };
-        case 'SETSECTION':
+        case 'SETMEMBER':
             return {
                 ...state,
-                isSection: action.payload,
+                member: action.payload,
             };
         case 'SETSELECTEDSECTION':
             return {
                 ...state,
                 selectedSection: action.payload,
+            };
+        case 'SETSELECTEDNOTE':
+            return {
+                ...state,
+                selectedNote: action.payload,
             };
         case 'REVALIDATENOTES':
             return {

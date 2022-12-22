@@ -10,9 +10,10 @@ import { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "../context/useProvider";
+import { useQueryClient } from "react-query";
 
 function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   //* ---- STATES
   const [isChecked, setIsChecked] = useState(subNote.checked);
@@ -26,20 +27,19 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
       .update({ checked: !subNote.checked })
       .eq("id", subNote.id);
     if (error) return alert("Error updating the note!");
-    dispatch({ type: "REVALIDATESUBNOTES" });
-    toast.success("Vamos al seguiente!!");
+    queryClient.invalidateQueries("sub_notes");
   };
 
   const deleteNote = async () => {
     setLoading(true);
     if (confirm("Delete this note ?")) {
       const { error } = await supabase
-        .from("todos")
+        .from("sub_todos")
         .delete()
         .eq("id", subNote.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
-      dispatch({ type: "REVALIDATESUBNOTES" });
+      queryClient.invalidateQueries("sub_notes");
       setLoading(false);
     } else {
       setLoading(false);
@@ -51,10 +51,9 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
       <div className="relative">
         {/* //* SUB NOTE DETAILS */}
         <motion.section
-          layout
           drag={"x"}
           dragConstraints={{ right: 100, left: 0 }}
-          className={`flex z-20 items-center justify-between relative w-full p-4 border-t border-t-blue-200 bg-slate-50 ${
+          className={`flex z-20 items-center justify-between relative w-full p-4 shadow-sm border border-gray-200 bg-slate-50 ${
             isChecked ? "line-through" : ""
           }`}
         >

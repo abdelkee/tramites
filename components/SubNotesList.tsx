@@ -10,6 +10,7 @@ const getSubNotes = async (id: string | undefined) => {
   const { data: subNotes, error } = await supabase
     .from("sub_todos")
     .select()
+    .order("title")
     .eq("parent", id);
   if (error) throw new Error("error getting sub notes");
   if (!subNotes) return [];
@@ -17,31 +18,29 @@ const getSubNotes = async (id: string | undefined) => {
 };
 
 function SubNotesList({ parentNote }: { parentNote: NoteType }) {
-  const { revalidateSubNotes } = useSelector();
-  console.log("here is sub notes");
   //* ---- QUERY
   const {
     data: subNotes,
     isLoading,
     isError,
-  } = useQuery(["sub_notes", revalidateSubNotes], () =>
-    getSubNotes(parentNote?.id)
-  );
+  } = useQuery("sub_notes", () => getSubNotes(parentNote?.id));
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
-
   //* ---- JSX
   return (
     <motion.section
       // initial={{ height: 0 }}
       // animate={{ height: "auto" }}
       // exit={{ height: 0 }}
-      layout
-      className="grid grid-cols-1 gap-2 p-4 rounded-md bg-slate-50 mt-1 border border-yellow-500"
+      className="grid grid-cols-1 gap-2 p-4 rounded-md bg-slate-100 mt-1 border border-slate-600"
     >
-      {subNotes?.map((subNote) => (
-        <SubNoteCard key={subNote.id} subNote={subNote} />
-      ))}
+      {subNotes?.length === 0 ? (
+        <p>No hay tramites aun!</p>
+      ) : (
+        subNotes?.map((subNote) => (
+          <SubNoteCard key={subNote.id} subNote={subNote} />
+        ))
+      )}
     </motion.section>
   );
 }

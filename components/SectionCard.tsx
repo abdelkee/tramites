@@ -13,7 +13,7 @@ function SectionCard({ section }: { section: SectionType }) {
   return (
     <button
       onClick={handleClick}
-      className={`flex ${
+      className={`flex w-max ${
         selectedSection?.id === section.id
           ? "bg-yellow-400 shadow-none border-yellow-500"
           : "bg-slate-50 border-slate-200 shadow-md"

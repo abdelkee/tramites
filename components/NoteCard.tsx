@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   MdAccessTime,
   MdArrowCircleDown,
@@ -6,6 +6,7 @@ import {
   MdCheckCircle,
   MdDelete,
   MdArrowCircleUp,
+  MdAdd,
 } from "react-icons/md";
 import { NoteType } from "../Types";
 import { useState } from "react";
@@ -13,9 +14,11 @@ import { supabase } from "../utils/supabaseClient";
 import { toast } from "react-hot-toast";
 import SubNotesList from "./SubNotesList";
 import { useDispatch } from "../context/useProvider";
+import { useQueryClient } from "react-query";
 
 function NoteCard({ note }: { note: NoteType }) {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   //* ---- STATES
   const [isChecked, setIsChecked] = useState(note.checked);
@@ -30,8 +33,7 @@ function NoteCard({ note }: { note: NoteType }) {
       .update({ checked: !note.checked })
       .eq("id", note.id);
     if (error) return alert("Error updating the note!");
-    dispatch({ type: "REVALIDATENOTES" });
-    toast.success("Vamos al seguiente!!");
+    queryClient.invalidateQueries("notes");
   };
 
   const deleteNote = async () => {
@@ -40,7 +42,7 @@ function NoteCard({ note }: { note: NoteType }) {
       const { error } = await supabase.from("todos").delete().eq("id", note.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
-      dispatch({ type: "REVALIDATENOTES" });
+      queryClient.invalidateQueries("notes");
       setLoading(false);
     } else {
       setLoading(false);
@@ -54,10 +56,10 @@ function NoteCard({ note }: { note: NoteType }) {
         <motion.section
           drag={!note.has_children && "x"}
           dragConstraints={{ right: 100, left: 0 }}
-          className={`flex z-20 items-center justify-between relative w-full p-4 rounded-md ${
+          className={`flex z-20 items-center justify-between shadow relative w-full p-4 rounded-md ${
             isChecked ? "line-through" : ""
           } ${
-            isNoteOpen ? "border border-yellow-500 bg-slate-500" : "bg-slate-50"
+            isNoteOpen ? "border border-slate-600 bg-slate-500" : "bg-slate-50"
           }`}
         >
           <p
@@ -83,18 +85,35 @@ function NoteCard({ note }: { note: NoteType }) {
               )}
             </button>
           ) : (
-            <button
-              onClick={() => setIsNoteOpen(!isNoteOpen)}
-              className={`grid w-10 h-10 bg-transparent ${
-                isNoteOpen ? "text-slate-50" : "text-slate-600"
-              } rounded-full place-items-center`}
-            >
-              {!isNoteOpen ? (
-                <MdArrowCircleDown size="24px" />
-              ) : (
-                <MdArrowCircleUp size="24px" />
+            <div className="flex items-center space-x-4">
+              {/* //* ---- ADD SUB NOTE BUTTON */}
+              {isNoteOpen && (
+                <button
+                  className="text-slate-50"
+                  onClick={() => {
+                    dispatch({ type: "SETMEMBER", payload: "subNote" });
+                    dispatch({ type: "SETSELECTEDNOTE", payload: note });
+                    dispatch({ type: "SETMODALSHOW", payload: true });
+                  }}
+                >
+                  <MdAdd size="24px" />
+                </button>
               )}
-            </button>
+
+              {/* //* ---- OPEN NOTE BUTTON */}
+              <button
+                onClick={() => setIsNoteOpen(!isNoteOpen)}
+                className={`grid w-10 h-10 bg-transparent ${
+                  isNoteOpen ? "text-slate-50" : "text-slate-600"
+                } rounded-full place-items-center`}
+              >
+                {!isNoteOpen ? (
+                  <MdArrowCircleDown size="24px" />
+                ) : (
+                  <MdArrowCircleUp size="24px" />
+                )}
+              </button>
+            </div>
           )}
         </motion.section>
 
@@ -113,9 +132,7 @@ function NoteCard({ note }: { note: NoteType }) {
         )}
 
         {/* //* ---- card body */}
-        <AnimatePresence>
-          {isNoteOpen && <SubNotesList parentNote={note} />}
-        </AnimatePresence>
+        {isNoteOpen && <SubNotesList parentNote={note} />}
       </div>
     </>
   );
