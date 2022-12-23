@@ -92,6 +92,7 @@ function NewNote() {
       setTitle("");
       setLoading(false);
       dispatch({ type: "SETMODALSHOW", payload: false });
+      queryClient.invalidateQueries("sections");
       document.body.style.overflow = "auto";
     }
   };
@@ -101,7 +102,7 @@ function NewNote() {
     <motion.form
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed z-50 flex flex-col space-y-3 w-10/12 -translate-x-1/2 top-20 left-1/2"
+      className="fixed z-50 flex flex-col w-10/12 space-y-3 -translate-x-1/2 top-20 left-1/2"
       onSubmit={
         member === "section"
           ? addSection
@@ -167,16 +168,16 @@ function NewNote() {
       {/* //* ---- RADIO SECTION */}
 
       {member !== "section" && (
-        <section className="w-full py-4 space-y-4 pr-12 ">
+        <section className="w-full py-4 pr-12 space-y-4 ">
           {/* //* ---- HAS CHILDREN ---- */}
           {member === "note" && (
-            <div className="flex space-x-4 items-center justify-between">
+            <div className="flex items-center justify-between space-x-4">
               <p className="text-white">El tramite tiene sub tramites ?</p>
               <input
                 type="checkbox"
                 name="hasChildren"
                 id="grandChild"
-                className="accent-orange-600 w-6 h-6"
+                className="w-6 h-6 accent-orange-600"
                 checked={hasChildren}
                 onChange={() => setHasChildren(!hasChildren)}
               />
@@ -184,7 +185,7 @@ function NewNote() {
           )}
 
           {/* //* ---- WHO ---- */}
-          <div className="flex space-x-4 items-center justify-between">
+          <div className="flex items-center justify-between space-x-4">
             <p className="text-white">De quien es el tramite ?</p>
             <div className="flex items-center justify-between space-x-4">
               <input
@@ -193,7 +194,7 @@ function NewNote() {
                 id="abdel"
                 value="Abdel"
                 checked={quien === "Abdel"}
-                className="accent-blue-500 w-6 h-6"
+                className="w-6 h-6 accent-blue-500"
                 onChange={(e) => setQuien(e.target.value)}
               />
               <input
@@ -201,14 +202,14 @@ function NewNote() {
                 name="who"
                 id="belkys"
                 value="Belkys"
-                className="accent-pink-500 w-6 h-6"
+                className="w-6 h-6 accent-pink-500"
                 onChange={(e) => setQuien(e.target.value)}
               />
             </div>
           </div>
 
           {/* //* ---- WHERE ---- */}
-          <div className="flex space-x-4 items-center justify-between">
+          <div className="flex items-center justify-between space-x-4">
             <p className="text-white">Donde es el tramite ?</p>
             <div className="flex items-center justify-between space-x-4">
               <label className={`${donde === "MA" && "border-2 border-white"}`}>
@@ -218,7 +219,7 @@ function NewNote() {
                   name="where"
                   value="MA"
                   id="MA"
-                  className="accent-red-600 w-6 h-6 absolute invisible"
+                  className="absolute invisible w-6 h-6 accent-red-600"
                   onChange={(e) => setDonde(e.target.value)}
                 />
               </label>
@@ -229,7 +230,7 @@ function NewNote() {
                   name="where"
                   value="EC"
                   id="EC"
-                  className="accent-yellow-600 w-6 h-6 absolute invisible"
+                  className="absolute invisible w-6 h-6 accent-yellow-600"
                   onChange={(e) => setDonde(e.target.value)}
                 />
               </label>

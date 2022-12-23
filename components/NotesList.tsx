@@ -24,14 +24,13 @@ function NotesList() {
     data: notes,
     isLoading,
     isError,
-    refetch,
   } = useQuery(["notes", selectedSection], () => getNotes(selectedSection?.id));
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
 
   //* ---- JSX
   return (
-    <section className="grid grid-cols-1 gap-5 p-4 rounded-md mt-8 mb-20 overflow-x-hidden">
+    <section className="grid grid-cols-1 gap-5 p-4 mt-8 mb-20 overflow-x-hidden rounded-md">
       {notes?.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}

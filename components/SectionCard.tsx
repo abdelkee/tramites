@@ -1,9 +1,16 @@
 import { SectionType } from "../Types";
 import { useDispatch, useSelector } from "../context/useProvider";
+import { useEffect } from "react";
 
 function SectionCard({ section }: { section: SectionType }) {
   const dispatch = useDispatch();
   const { selectedSection } = useSelector();
+
+  useEffect(() => {
+    if (section.title === "General") {
+      dispatch({ type: "SETSELECTEDSECTION", payload: section });
+    }
+  }, []);
 
   //* ---- FUNCTIONS
   const handleClick = () => {

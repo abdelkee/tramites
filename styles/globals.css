@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .input-field {
+        @apply p-4 border rounded focus:outline-none focus:border-slate-600 border-slate-400;
+    }
+}
+
 body {
     background-color: #E2E8F0;
     
