@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast";
 import SubNotesList from "./SubNotesList";
 import { useDispatch } from "../context/useProvider";
 import { useQueryClient } from "react-query";
+import Flag from "react-flagkit";
 
 function NoteCard({ note }: { note: NoteType }) {
   const dispatch = useDispatch();
@@ -56,19 +57,30 @@ function NoteCard({ note }: { note: NoteType }) {
         <motion.section
           drag={!note.has_children && "x"}
           dragConstraints={{ right: 100, left: 0 }}
-          className={`flex z-20 items-center justify-between shadow relative w-full p-4 rounded-md ${
-            isChecked ? "line-through" : ""
+          className={`flex overflow-hidden z-20 items-center justify-between shadow relative w-full py-4 pl-6 pr-4 rounded-md ${
+            isChecked ? "line-through border shadow-none" : ""
           } ${
             isNoteOpen ? "border border-slate-600 bg-slate-500" : "bg-slate-50"
           }`}
         >
-          <p
-            className={`w-3/4 select-text ${
-              isChecked ? "text-slate-500" : "text-slate-800"
-            } ${isNoteOpen ? "text-slate-50" : ""}`}
-          >
-            {note.title}
-          </p>
+          <div className="w-3/4 flex items-center space-x-3">
+            <p
+              className={`select-text ${
+                isChecked ? "text-slate-500" : "text-slate-800"
+              } ${isNoteOpen ? "text-slate-50" : ""}`}
+            >
+              {note.title}
+            </p>
+            {note.has_children && (
+              <p
+                className={`font-semibold ${isNoteOpen ? "text-slate-50" : ""}`}
+              >
+                0
+              </p>
+            )}
+          </div>
+
+          {/* //* ---- TOGGLE BUTTON SECTION */}
           {!note.has_children ? (
             <button
               onClick={toggleNote}
@@ -115,13 +127,30 @@ function NoteCard({ note }: { note: NoteType }) {
               </button>
             </div>
           )}
+
+          {/* //* ---- WHO SECTION */}
+          <section
+            className={`absolute -top-6 left-0 w-4 h-12 ${
+              note.who === "Abdel"
+                ? "bg-blue-400"
+                : note.who === "Belkys"
+                ? "bg-pink-400"
+                : ""
+            } rotate-45`}
+          />
+
+          {/* //* ---- WHERE SECTION */}
+          <section className="absolute left-1 bottom-1 border border-gray-100">
+            <Flag country={note.where} size={20} />
+          </section>
         </motion.section>
 
         {/* //* DELETE BUTTON */}
         {!note.has_children && (
           <button
-            className="absolute top-0 left-0 z-10 grid w-24 h-full p-4 bg-red-500 border rounded-md place-items-center text-slate-50 active:focus:bg-red-600"
+            className="absolute top-0 left-0 z-10 grid w-24 h-full p-4 bg-red-500 border rounded-md place-items-center text-slate-50 active:focus:bg-red-600 disabled:bg-gray-500"
             onClick={deleteNote}
+            disabled={loading}
           >
             {!loading ? (
               <MdDelete size="24px" />

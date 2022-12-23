@@ -5,15 +5,19 @@ import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "../context/useProvider";
 import { useQueryClient } from "react-query";
+import Flag from "react-flagkit";
 
 function NewNote() {
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
   //* ---- STATES
   const [title, setTitle] = useState("");
   const [hasChildren, setHasChildren] = useState(false);
   const [loading, setLoading] = useState(false);
   const { member, selectedSection, selectedNote } = useSelector();
-  const dispatch = useDispatch();
+  const [donde, setDonde] = useState<string>("MA");
+  const [quien, setQuien] = useState<string>("Abdel");
 
   //* ---- FUNCTIONS
   const addNote = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,6 +31,8 @@ function NewNote() {
           title: capTitle,
           parent: selectedSection?.id,
           has_children: hasChildren,
+          who: quien,
+          where: donde,
         },
       ]);
       if (error) return alert("Error creating the note!");
@@ -52,6 +58,8 @@ function NewNote() {
         {
           title: capTitle,
           parent: selectedNote?.id,
+          who: quien,
+          where: donde,
         },
       ]);
       if (error) return alert("Error creating the note!");
@@ -93,7 +101,7 @@ function NewNote() {
     <motion.form
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed z-50 flex items-center justify-between w-10/12 space-x-2 -translate-x-1/2 top-40 left-1/2"
+      className="fixed z-50 flex flex-col space-y-3 w-10/12 -translate-x-1/2 top-20 left-1/2"
       onSubmit={
         member === "section"
           ? addSection
@@ -102,71 +110,132 @@ function NewNote() {
           : addSubNote
       }
     >
-      <label className="absolute w-full text-xl font-semibold tracking-wider text-center text-white -translate-x-1/2 left-1/2 -top-24">
+      <label className="w-full mb-8 text-xl font-semibold tracking-wider text-center text-white">
         {member === "section"
-          ? "Nueva familia"
+          ? "Nueva seccion"
           : member === "note"
-          ? "Nuevo miembro de familia " + selectedSection?.title
+          ? "Nuevo tramite para " + selectedSection?.title
           : member === "subNote"
-          ? "Nuevo hijo de " + selectedNote?.title
+          ? "Nuevo sub tramite en " + selectedNote?.title
           : ""}
       </label>
 
-      {/* //* ---- INPUT FIELD */}
-      <input
-        type="text"
-        placeholder={
-          member === "section"
-            ? "Apellido ..."
-            : member === "note"
-            ? "Nombre del miembro ..."
-            : member === "subNote"
-            ? "Nombre del hijo ..."
-            : ""
-        }
-        className={`flex-1 p-4 rounded focus:outline-none focus:border-2 ${
-          member === "section"
-            ? "focus:border-blue-400"
-            : member === "note"
-            ? "focus:border-orange-400"
-            : member === "subNote"
-            ? "focus:border-cyan-400"
-            : ""
-        }`}
-        autoFocus
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <section className="flex items-center justify-between space-x-2">
+        {/* //* ---- INPUT FIELD */}
+        <input
+          type="text"
+          placeholder={
+            member === "section"
+              ? "Titulo de la seccion ..."
+              : member === "note"
+              ? "Titulo del tramite ..."
+              : member === "subNote"
+              ? "Titulo del sub tramite ..."
+              : ""
+          }
+          className={`flex-1 p-4 rounded focus:outline-none focus:border-2 ${
+            member === "section"
+              ? "focus:border-blue-400"
+              : member === "note"
+              ? "focus:border-orange-400"
+              : member === "subNote"
+              ? "focus:border-cyan-400"
+              : ""
+          }`}
+          autoFocus
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      {/* //* ---- SUBMIT BUTTON */}
-      <button
-        type="submit"
-        disabled={!title}
-        className={`grid p-4 text-white rounded ${
-          member === "section"
-            ? "bg-blue-600 border-blue-500 disabled:bg-gray-400"
-            : member === "note"
-            ? "bg-orange-600 border-orange-500 disabled:bg-gray-400"
-            : member === "subNote"
-            ? "bg-cyan-600 border-cyan-500 disabled:bg-gray-400"
-            : ""
-        } border-2 place-items-center disabled:border-none`}
-      >
-        {!loading ? <MdAdd size="24px" /> : <MdNorth size="24px" />}
-      </button>
+        {/* //* ---- SUBMIT BUTTON */}
+        <button
+          type="submit"
+          disabled={!title || loading}
+          className={`grid p-4 text-white rounded ${
+            member === "section"
+              ? "bg-blue-600 border-blue-500 disabled:bg-gray-400"
+              : member === "note"
+              ? "bg-orange-600 border-orange-500 disabled:bg-gray-400"
+              : member === "subNote"
+              ? "bg-cyan-600 border-cyan-500 disabled:bg-gray-400"
+              : ""
+          } border-2 place-items-center disabled:border-gray-400`}
+        >
+          {!loading ? <MdAdd size="24px" /> : <MdNorth size="24px" />}
+        </button>
+      </section>
 
-      {/* //* ---- GRANDCHILD SECTION */}
-      {member === "note" && (
-        <div className="absolute -bottom-16 left-0 flex space-x-4 items-center w-full py-4 pr-4">
-          <p className="text-white">Este hijo tiene hijos ?</p>
-          <input
-            type="checkbox"
-            name="hasChildren"
-            id="grandChild"
-            className="accent-pink-600 w-6 h-6"
-            checked={hasChildren}
-            onChange={() => setHasChildren(!hasChildren)}
-          />
-        </div>
+      {/* //* ---- RADIO SECTION */}
+
+      {member !== "section" && (
+        <section className="w-full py-4 space-y-4 pr-12 ">
+          {/* //* ---- HAS CHILDREN ---- */}
+          {member === "note" && (
+            <div className="flex space-x-4 items-center justify-between">
+              <p className="text-white">El tramite tiene sub tramites ?</p>
+              <input
+                type="checkbox"
+                name="hasChildren"
+                id="grandChild"
+                className="accent-orange-600 w-6 h-6"
+                checked={hasChildren}
+                onChange={() => setHasChildren(!hasChildren)}
+              />
+            </div>
+          )}
+
+          {/* //* ---- WHO ---- */}
+          <div className="flex space-x-4 items-center justify-between">
+            <p className="text-white">De quien es el tramite ?</p>
+            <div className="flex items-center justify-between space-x-4">
+              <input
+                type="radio"
+                name="who"
+                id="abdel"
+                value="Abdel"
+                checked={quien === "Abdel"}
+                className="accent-blue-500 w-6 h-6"
+                onChange={(e) => setQuien(e.target.value)}
+              />
+              <input
+                type="radio"
+                name="who"
+                id="belkys"
+                value="Belkys"
+                className="accent-pink-500 w-6 h-6"
+                onChange={(e) => setQuien(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* //* ---- WHERE ---- */}
+          <div className="flex space-x-4 items-center justify-between">
+            <p className="text-white">Donde es el tramite ?</p>
+            <div className="flex items-center justify-between space-x-4">
+              <label className={`${donde === "MA" && "border-2 border-white"}`}>
+                <Flag country={"MA"} />
+                <input
+                  type="radio"
+                  name="where"
+                  value="MA"
+                  id="MA"
+                  className="accent-red-600 w-6 h-6 absolute invisible"
+                  onChange={(e) => setDonde(e.target.value)}
+                />
+              </label>
+              <label className={`${donde === "EC" && "border-2 border-white"}`}>
+                <Flag country={"EC"} />
+                <input
+                  type="radio"
+                  name="where"
+                  value="EC"
+                  id="EC"
+                  className="accent-yellow-600 w-6 h-6 absolute invisible"
+                  onChange={(e) => setDonde(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
+        </section>
       )}
     </motion.form>
   );

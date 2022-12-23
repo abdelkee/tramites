@@ -1,9 +1,10 @@
 import { NoteType, SubNoteType } from "../Types";
 import { AnimatePresence, motion } from "framer-motion";
 import SubNoteCard from "./SubNoteCard";
+import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useQuery } from "react-query";
-import { useSelector } from "../context/useProvider";
+import { useDispatch, useSelector } from "../context/useProvider";
 
 const getSubNotes = async (id: string | undefined) => {
   if (!id) return null;
@@ -18,6 +19,9 @@ const getSubNotes = async (id: string | undefined) => {
 };
 
 function SubNotesList({ parentNote }: { parentNote: NoteType }) {
+  //* ---- HOOKS
+  const dispatch = useDispatch();
+
   //* ---- QUERY
   const {
     data: subNotes,
@@ -35,7 +39,7 @@ function SubNotesList({ parentNote }: { parentNote: NoteType }) {
       className="grid grid-cols-1 gap-2 p-4 rounded-md bg-slate-100 mt-1 border border-slate-600"
     >
       {subNotes?.length === 0 ? (
-        <p>No hay tramites aun!</p>
+        <p className="text-gray-500">No hay tramites aun!</p>
       ) : (
         subNotes?.map((subNote) => (
           <SubNoteCard key={subNote.id} subNote={subNote} />

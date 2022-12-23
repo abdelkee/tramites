@@ -6,8 +6,7 @@ const initialState: AppState = {
   member: "note",
   selectedSection: undefined,
   selectedNote: undefined,
-  revalidateNotes: false,
-  revalidateSubNotes: false,
+  subNotesLength: 0,
 };
 
 export const AppContext = createContext<AppState>(initialState);

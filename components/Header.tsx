@@ -1,4 +1,5 @@
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdFilter, MdFilter1, MdTune } from "react-icons/md";
+import { useQueryClient } from "react-query";
 import { useDispatch } from "../context/useProvider";
 
 function Header() {
@@ -10,6 +11,9 @@ function Header() {
   //   completed: number;
   //   pending: number;
   // }
+  const queryClient = useQueryClient();
+
+  const filteredNotes = () => {};
   return (
     <header className="fixed flex-row-reverse top-0 left-0 z-30 flex items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
       {/* {completed === 0 && pending === 0 ? (
@@ -38,6 +42,9 @@ function Header() {
         }}
       >
         <MdAdd size={"24px"} />
+      </button>
+      <button className="" onClick={() => {}}>
+        <MdTune size={"24px"} />
       </button>
     </header>
   );

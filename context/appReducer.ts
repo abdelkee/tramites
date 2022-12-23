@@ -4,9 +4,8 @@ export interface AppState {
     modalShow: boolean;
     member: 'section' | 'note' | 'subNote';
     selectedSection?: SectionType
-    selectedNote?: NoteType
-    revalidateNotes: boolean
-    revalidateSubNotes: boolean
+    selectedNote?: NoteType,
+    subNotesLength: number
 }
 
 export type ActionType =
@@ -14,8 +13,7 @@ export type ActionType =
     | { type: 'SETMEMBER', payload: AppState['member'] }
     | { type: 'SETSELECTEDSECTION', payload: AppState['selectedSection'] }
     | { type: 'SETSELECTEDNOTE', payload: AppState['selectedNote'] }
-    | { type: 'REVALIDATENOTES' }
-    | { type: 'REVALIDATESUBNOTES' }
+    | { type: 'SETSUBNOTESLENGTH', payload: AppState['subNotesLength'] }
 
 function appReducer(state: AppState, action: ActionType) {
     switch (action.type) {
@@ -39,15 +37,10 @@ function appReducer(state: AppState, action: ActionType) {
                 ...state,
                 selectedNote: action.payload,
             };
-        case 'REVALIDATENOTES':
+        case 'SETSUBNOTESLENGTH':
             return {
                 ...state,
-                revalidate: !state.revalidateNotes,
-            };
-        case 'REVALIDATESUBNOTES':
-            return {
-                ...state,
-                revalidate: !state.revalidateSubNotes,
+                subNotesLength: action.payload,
             };
         default:
             return state;
