@@ -5,7 +5,6 @@ import { useSelector } from "../context/useProvider";
 import { useQuery } from "react-query";
 
 const getNotes = async (section_id: string | undefined) => {
-  console.log("filtered called");
   if (!section_id) return null;
   const { data: notes, error } = await supabase
     .from("todos")
@@ -21,7 +20,6 @@ const getFilteredNotes = async (
   section_id: string | undefined,
   filterOptions?: FilterArrType
 ) => {
-  console.log("filtered called");
   if (!section_id) return null;
   if (filterOptions) {
     const { data: notes, error } = await supabase
@@ -31,7 +29,7 @@ const getFilteredNotes = async (
       .eq("parent", section_id)
       .in("checked", filterOptions.estado)
       .in("who", filterOptions.quien)
-      .in("donde", filterOptions.donde);
+      .in("where", filterOptions.donde);
     if (error) throw new Error("error getting notes");
     if (!notes) return [];
     return notes as NoteType[];
@@ -45,7 +43,13 @@ function NotesList() {
     data: notes,
     isLoading,
     isError,
-  } = useQuery(["notes", selectedSection], () => getNotes(selectedSection?.id));
+  } = useQuery(["notes", selectedSection, filterValues], () => {
+    if (filterValues) {
+      return getFilteredNotes(selectedSection?.id, filterValues);
+    } else {
+      return getNotes(selectedSection?.id);
+    }
+  });
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
   //* ---- JSX

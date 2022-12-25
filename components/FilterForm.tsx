@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  MdAlarm,
+  MdAccessTime,
   MdClearAll,
   MdComputer,
   MdDone,
@@ -31,7 +31,6 @@ function FilterForm() {
       type: "SET_FILTER_VALUES",
       payload: { estado: resE, quien: resQ, donde: resD },
     });
-    queryClient.invalidateQueries("notes");
     dispatch({ type: "SET_DRAWER_SHOW", payload: false });
   };
   return (
@@ -67,7 +66,7 @@ function FilterForm() {
                       : "bg-slate-50 text-orange-500"
                   } label-radio border border-orange-500 `}
                 >
-                  <MdAlarm size="24px" />
+                  <MdAccessTime size="24px" />
                   <input
                     className="absolute invisible"
                     type="radio"
