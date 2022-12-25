@@ -9,7 +9,7 @@ function Modal() {
   document.body.style.overflow = "hidden";
   return (
     <>
-      <Overlay />
+      <Overlay show={modalShow} />
       <NewNote />
     </>
   );

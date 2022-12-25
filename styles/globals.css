@@ -6,6 +6,9 @@
     .input-field {
         @apply p-4 border rounded focus:outline-none focus:border-slate-600 border-slate-400;
     }
+    .label-radio {
+        @apply grid flex-1 py-2 rounded cursor-pointer place-items-center;
+    }
 }
 
 body {

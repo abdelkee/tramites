@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { useRouter } from "next/router";
+import DrawerModal from "../components/DrawerModal";
 
 //* ---- JSX
 function page() {
@@ -23,6 +24,7 @@ function page() {
       <NotesList />
       <FAB />
       <Modal />
+      <DrawerModal />
       <Toaster />
     </>
   );

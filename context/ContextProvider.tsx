@@ -3,10 +3,12 @@ import appReducer, { ActionType, AppState } from "./appReducer";
 
 const initialState: AppState = {
   modalShow: false,
+  drawerShow: false,
   member: "note",
   selectedSection: undefined,
   selectedNote: undefined,
   subNotesLength: 0,
+  filterValues: undefined,
 };
 
 export const AppContext = createContext<AppState>(initialState);

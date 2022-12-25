@@ -103,9 +103,9 @@ function NoteCard({ note }: { note: NoteType }) {
                 <button
                   className="text-slate-50"
                   onClick={() => {
-                    dispatch({ type: "SETMEMBER", payload: "subNote" });
-                    dispatch({ type: "SETSELECTEDNOTE", payload: note });
-                    dispatch({ type: "SETMODALSHOW", payload: true });
+                    dispatch({ type: "SET_MEMBER", payload: "subNote" });
+                    dispatch({ type: "SET_SELECTED_NOTE", payload: note });
+                    dispatch({ type: "SET_MODAL_SHOW", payload: true });
                   }}
                 >
                   <MdAdd size="24px" />

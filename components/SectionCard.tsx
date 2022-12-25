@@ -8,13 +8,13 @@ function SectionCard({ section }: { section: SectionType }) {
 
   useEffect(() => {
     if (section.title === "General") {
-      dispatch({ type: "SETSELECTEDSECTION", payload: section });
+      dispatch({ type: "SET_SELECTED_SECTION", payload: section });
     }
   }, []);
 
   //* ---- FUNCTIONS
   const handleClick = () => {
-    dispatch({ type: "SETSELECTEDSECTION", payload: section });
+    dispatch({ type: "SET_SELECTED_SECTION", payload: section });
   };
 
   return (

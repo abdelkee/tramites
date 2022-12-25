@@ -42,7 +42,7 @@ function NewNote() {
     } finally {
       setTitle("");
       setLoading(false);
-      dispatch({ type: "SETMODALSHOW", payload: false });
+      dispatch({ type: "SET_MODAL_SHOW", payload: false });
       queryClient.invalidateQueries("notes");
       document.body.style.overflow = "auto";
     }
@@ -69,7 +69,7 @@ function NewNote() {
     } finally {
       setTitle("");
       setLoading(false);
-      dispatch({ type: "SETMODALSHOW", payload: false });
+      dispatch({ type: "SET_MODAL_SHOW", payload: false });
       queryClient.invalidateQueries("sub_notes");
       document.body.style.overflow = "auto";
     }
@@ -91,7 +91,7 @@ function NewNote() {
     } finally {
       setTitle("");
       setLoading(false);
-      dispatch({ type: "SETMODALSHOW", payload: false });
+      dispatch({ type: "SET_MODAL_SHOW", payload: false });
       queryClient.invalidateQueries("sections");
       document.body.style.overflow = "auto";
     }

@@ -11,13 +11,11 @@ function Header() {
   //   completed: number;
   //   pending: number;
   // }
-  const queryClient = useQueryClient();
 
-  const filteredNotes = () => {};
   return (
-    <header className="fixed flex-row-reverse top-0 left-0 z-30 flex items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
+    <header className="fixed top-0 left-0 z-30 flex flex-row-reverse items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
       {/* {completed === 0 && pending === 0 ? (
-        <p className="text-center w-full">No hay tramites *-*</p>
+        <p className="w-full text-center">No hay tramites *-*</p>
       ) : (
         <>
           <section className="flex items-center space-x-4">
@@ -37,13 +35,19 @@ function Header() {
       <button
         className=""
         onClick={() => {
-          dispatch({ type: "SETMEMBER", payload: "section" });
-          dispatch({ type: "SETMODALSHOW", payload: true });
+          dispatch({ type: "SET_MEMBER", payload: "section" });
+          dispatch({ type: "SET_MODAL_SHOW", payload: true });
         }}
       >
         <MdAdd size={"24px"} />
       </button>
-      <button className="" onClick={() => {}}>
+      <button
+        className=""
+        onClick={() => {
+          dispatch({ type: "SET_FILTER_VALUES", payload: undefined });
+          dispatch({ type: "SET_DRAWER_SHOW", payload: true });
+        }}
+      >
         <MdTune size={"24px"} />
       </button>
     </header>

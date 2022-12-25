@@ -20,3 +20,15 @@ export interface NotesBySectionType {
 }
 
 export type SubNoteType = Omit<NoteType, 'has_children'>
+
+export type FilterType = {
+    estado: boolean | null;
+    quien: "Abdel" | "Belkys" | null;
+    donde: "MA" | "EC" | null;
+};
+
+export type FilterArrType = {
+    estado: boolean[];
+    quien: string[];
+    donde: string[];
+};

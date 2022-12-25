@@ -1,46 +1,60 @@
-import { NoteType, SectionType } from "../Types";
+import { FilterArrType, FilterType, NoteType, SectionType } from "../Types";
 
 export interface AppState {
     modalShow: boolean;
-    member: 'section' | 'note' | 'subNote';
+    drawerShow: boolean;
+    member: 'section' | 'note' | 'subNote' | '';
     selectedSection?: SectionType
     selectedNote?: NoteType,
-    subNotesLength: number
+    subNotesLength: number,
+    filterValues?: FilterArrType
 }
 
 export type ActionType =
-    | { type: 'SETMODALSHOW', payload: AppState['modalShow'] }
-    | { type: 'SETMEMBER', payload: AppState['member'] }
-    | { type: 'SETSELECTEDSECTION', payload: AppState['selectedSection'] }
-    | { type: 'SETSELECTEDNOTE', payload: AppState['selectedNote'] }
-    | { type: 'SETSUBNOTESLENGTH', payload: AppState['subNotesLength'] }
+    | { type: 'SET_MODAL_SHOW', payload: AppState['modalShow'] }
+    | { type: 'SET_DRAWER_SHOW', payload: AppState['drawerShow'] }
+    | { type: 'SET_MEMBER', payload: AppState['member'] }
+    | { type: 'SET_SELECTED_SECTION', payload: AppState['selectedSection'] }
+    | { type: 'SET_SELECTED_NOTE', payload: AppState['selectedNote'] }
+    | { type: 'SET_SUBNOTES_LENGTH', payload: AppState['subNotesLength'] }
+    | { type: 'SET_FILTER_VALUES', payload: AppState['filterValues'] }
 
 function appReducer(state: AppState, action: ActionType) {
     switch (action.type) {
-        case 'SETMODALSHOW':
+        case 'SET_MODAL_SHOW':
             return {
                 ...state,
                 modalShow: action.payload,
             };
-        case 'SETMEMBER':
+        case 'SET_DRAWER_SHOW':
+            return {
+                ...state,
+                drawerShow: action.payload,
+            };
+        case 'SET_MEMBER':
             return {
                 ...state,
                 member: action.payload,
             };
-        case 'SETSELECTEDSECTION':
+        case 'SET_SELECTED_SECTION':
             return {
                 ...state,
                 selectedSection: action.payload,
             };
-        case 'SETSELECTEDNOTE':
+        case 'SET_SELECTED_NOTE':
             return {
                 ...state,
                 selectedNote: action.payload,
             };
-        case 'SETSUBNOTESLENGTH':
+        case 'SET_SUBNOTES_LENGTH':
             return {
                 ...state,
                 subNotesLength: action.payload,
+            };
+        case 'SET_FILTER_VALUES':
+            return {
+                ...state,
+                filterValues: action.payload,
             };
         default:
             return state;
