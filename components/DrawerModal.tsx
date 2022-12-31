@@ -10,7 +10,7 @@ function DrawerModal() {
   document.body.style.overflow = "hidden";
   return (
     <>
-      <Overlay show={drawerShow} />
+      <Overlay />
       <FilterForm />
     </>
   );

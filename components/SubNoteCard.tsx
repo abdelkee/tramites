@@ -28,7 +28,8 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
       .update({ checked: !subNote.checked })
       .eq("id", subNote.id);
     if (error) return alert("Error updating the note!");
-    queryClient.invalidateQueries("sub_notes");
+    queryClient.invalidateQueries(["sub_notes"]);
+    queryClient.invalidateQueries(["notesState"]);
   };
 
   const deleteNote = async () => {
@@ -40,7 +41,8 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
         .eq("id", subNote.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
-      queryClient.invalidateQueries("sub_notes");
+      queryClient.invalidateQueries(["sub_notes"]);
+      queryClient.invalidateQueries(["notesState"]);
       setLoading(false);
     } else {
       setLoading(false);
@@ -94,7 +96,7 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
           />
 
           {/* //* ---- WHERE SECTION */}
-          <section className="absolute left-1 bottom-1 border border-gray-100">
+          <section className="absolute border border-gray-100 left-1 bottom-1">
             <Flag country={subNote.where} size={20} />
           </section>
         </motion.section>

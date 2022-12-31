@@ -34,7 +34,8 @@ function NoteCard({ note }: { note: NoteType }) {
       .update({ checked: !note.checked })
       .eq("id", note.id);
     if (error) return alert("Error updating the note!");
-    queryClient.invalidateQueries("notes");
+    queryClient.invalidateQueries(["notes"]);
+    queryClient.invalidateQueries(["notesState"]);
   };
 
   const deleteNote = async () => {
@@ -43,7 +44,8 @@ function NoteCard({ note }: { note: NoteType }) {
       const { error } = await supabase.from("todos").delete().eq("id", note.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
-      queryClient.invalidateQueries("notes");
+      queryClient.invalidateQueries(["notes"]);
+      queryClient.invalidateQueries(["notesState"]);
       setLoading(false);
     } else {
       setLoading(false);
@@ -63,7 +65,7 @@ function NoteCard({ note }: { note: NoteType }) {
             isNoteOpen ? "border border-slate-600 bg-slate-500" : "bg-slate-50"
           }`}
         >
-          <div className="w-3/4 flex items-center space-x-3">
+          <div className="flex items-center w-3/4 space-x-3">
             <p
               className={`select-text ${
                 isChecked ? "text-slate-500" : "text-slate-800"
@@ -140,7 +142,7 @@ function NoteCard({ note }: { note: NoteType }) {
           />
 
           {/* //* ---- WHERE SECTION */}
-          <section className="absolute left-1 bottom-1 border border-gray-100">
+          <section className="absolute border border-gray-100 left-1 bottom-1">
             <Flag country={note.where} size={20} />
           </section>
         </motion.section>

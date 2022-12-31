@@ -43,7 +43,8 @@ function NewNote() {
       setTitle("");
       setLoading(false);
       dispatch({ type: "SET_MODAL_SHOW", payload: false });
-      queryClient.invalidateQueries("notes");
+      queryClient.invalidateQueries(["notes"]);
+      queryClient.invalidateQueries(["notesState"]);
       document.body.style.overflow = "auto";
     }
   };
@@ -70,7 +71,8 @@ function NewNote() {
       setTitle("");
       setLoading(false);
       dispatch({ type: "SET_MODAL_SHOW", payload: false });
-      queryClient.invalidateQueries("sub_notes");
+      queryClient.invalidateQueries(["sub_notes"]);
+      queryClient.invalidateQueries(["notesState"]);
       document.body.style.overflow = "auto";
     }
   };
