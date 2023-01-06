@@ -21,7 +21,7 @@ const getCheckedCount = async () => {
     if (queryError) throw new Error("error getting notes state" + queryError);
     return notesStates as Array<{ checked: boolean }>;
   } catch (error) {
-    console.log(error);
+    console.log("error", error);
   }
 };
 
@@ -38,7 +38,6 @@ function Header() {
   const completed = data?.filter(
     (noteState) => noteState.checked === true
   ).length;
-  console.log(pending, completed);
   return (
     <header className="fixed top-0 left-0 z-30 flex items-center justify-between w-full px-8 font-semibold text-white shadow-md shadow-slate-900/30 h-14 bg-slate-700">
       <button

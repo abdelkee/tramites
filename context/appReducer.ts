@@ -8,6 +8,7 @@ export interface AppState {
     selectedNote?: NoteType,
     subNotesLength: number,
     filterValues?: FilterArrType
+    openedNoteId: string
 }
 
 export type ActionType =
@@ -18,6 +19,7 @@ export type ActionType =
     | { type: 'SET_SELECTED_NOTE', payload: AppState['selectedNote'] }
     | { type: 'SET_SUBNOTES_LENGTH', payload: AppState['subNotesLength'] }
     | { type: 'SET_FILTER_VALUES', payload: AppState['filterValues'] }
+    | { type: 'SET_OPENED_NOTE_ID', payload: AppState['openedNoteId'] }
 
 function appReducer(state: AppState, action: ActionType) {
     switch (action.type) {
@@ -55,6 +57,11 @@ function appReducer(state: AppState, action: ActionType) {
             return {
                 ...state,
                 filterValues: action.payload,
+            };
+        case 'SET_OPENED_NOTE_ID':
+            return {
+                ...state,
+                openedNoteId: action.payload,
             };
         default:
             return state;

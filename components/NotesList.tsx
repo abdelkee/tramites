@@ -3,6 +3,7 @@ import NoteCard from "./NoteCard";
 import { supabase } from "../utils/supabaseClient";
 import { useSelector } from "../context/useProvider";
 import { useQuery } from "react-query";
+import NoteCardHasChildren from "./NoteCardHasChildren";
 
 const getNotes = async (section_id: string | undefined) => {
   if (!section_id) return null;
@@ -52,12 +53,17 @@ function NotesList() {
   });
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
+
   //* ---- JSX
   return (
     <section className="grid grid-cols-1 gap-5 p-4 mt-8 mb-20 overflow-x-hidden rounded-md">
-      {notes?.map((note) => (
-        <NoteCard key={note.id} note={note} />
-      ))}
+      {notes?.map((note) => {
+        if (note.has_children) {
+          return <NoteCardHasChildren key={note.id} note={note} />;
+        } else {
+          return <NoteCard key={note.id} note={note} />;
+        }
+      })}
     </section>
   );
 }

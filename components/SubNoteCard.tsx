@@ -51,7 +51,7 @@ function SubNoteCard({ subNote }: { subNote: SubNoteType }) {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative w-full">
         {/* //* SUB NOTE DETAILS */}
         <motion.section
           drag={"x"}

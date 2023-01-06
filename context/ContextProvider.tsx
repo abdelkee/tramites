@@ -9,6 +9,7 @@ const initialState: AppState = {
   selectedNote: undefined,
   subNotesLength: 0,
   filterValues: undefined,
+  openedNoteId: "",
 };
 
 export const AppContext = createContext<AppState>(initialState);
