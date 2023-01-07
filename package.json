@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@netlify/classnames-template-literals": "^1.0.3",
     "@supabase/supabase-js": "^2.2.0",
     "framer-motion": "^7.10.2",
     "next": "latest",

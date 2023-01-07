@@ -7,7 +7,6 @@ class MyDocument extends Document {
         <Head>
           <link rel="icon" href="/favicon.png" />
           <link rel="manifest" href="manifest.json" />
-
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="application-name" content="Tramites" />

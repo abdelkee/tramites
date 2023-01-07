@@ -1,22 +1,24 @@
+import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import Modal from "../components/Modal";
 import FAB from "../components/FAB";
-import { Toaster } from "react-hot-toast";
 import SectionsList from "../components/SectionsList";
 import NotesList from "../components/NotesList";
 import Header from "../components/Header";
-import { useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
-import { useRouter } from "next/router";
 import DrawerModal from "../components/DrawerModal";
 
-//* ---- JSX
-function page() {
+export default function page() {
+  // ---- HOOKS
   const { session } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!session) router.replace("/login");
   }, []);
+
+  // ---- JSX
   return (
     <>
       <Header />
@@ -29,5 +31,3 @@ function page() {
     </>
   );
 }
-
-export default page;

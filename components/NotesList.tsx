@@ -1,8 +1,9 @@
+import { useQuery } from "react-query";
+import ctl from "@netlify/classnames-template-literals";
 import { FilterArrType, NoteType } from "../Types";
 import NoteCard from "./NoteCard";
 import { supabase } from "../utils/supabaseClient";
 import { useSelector } from "../context/useProvider";
-import { useQuery } from "react-query";
 import NoteCardHasChildren from "./NoteCardHasChildren";
 
 const getNotes = async (section_id: string | undefined) => {
@@ -38,7 +39,7 @@ const getFilteredNotes = async (
 };
 
 function NotesList() {
-  //* ---- QUERY
+  // ---- HOOKS
   const { selectedSection, filterValues } = useSelector();
   const {
     data: notes,
@@ -54,14 +55,26 @@ function NotesList() {
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
 
-  //* ---- JSX
+  // ---- STYLES
+  const sectionStyle = ctl(`
+    grid 
+    grid-cols-1 
+    gap-5 
+    p-4 
+    mt-8 
+    mb-20 
+    overflow-x-hidden 
+    rounded-md
+  `);
+
+  // ---- JSX
   return (
-    <section className="grid grid-cols-1 gap-5 p-4 mt-8 mb-20 overflow-x-hidden rounded-md">
+    <section className={sectionStyle}>
       {notes?.map((note) => {
         if (note.has_children) {
           return <NoteCardHasChildren key={note.id} note={note} />;
         } else {
-          return <NoteCard key={note.id} note={note} />;
+          return <NoteCard key={note.id} note={note} noteType={"default"} />;
         }
       })}
     </section>

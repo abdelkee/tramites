@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { MdAdd, MdNorth } from "react-icons/md";
-import { supabase } from "../utils/supabaseClient";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "../context/useProvider";
 import { useQueryClient } from "react-query";
 import Flag from "react-flagkit";
+import ctl from "@netlify/classnames-template-literals";
+import { useDispatch, useSelector } from "../context/useProvider";
+import { supabase } from "../utils/supabaseClient";
 
-function NewNote() {
+export default function NewNote() {
+  // ---- HOOKS
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
-
-  //* ---- STATES
   const [title, setTitle] = useState("");
   const [hasChildren, setHasChildren] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function NewNote() {
   const [donde, setDonde] = useState<string>("MA");
   const [quien, setQuien] = useState<string>("Abdel");
 
-  //* ---- FUNCTIONS
+  // ---- FUNCTIONS
   const addNote = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -99,12 +99,145 @@ function NewNote() {
     }
   };
 
-  //* ---- JSX
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleCheckboxChange = () => {
+    setHasChildren((curr) => !curr);
+  };
+
+  const handleQuienChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuien(e.target.value);
+  };
+
+  const handleDondeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDonde(e.target.value);
+  };
+
+  // ---- STYLES
+  const s = {
+    container: ctl(`
+      fixed 
+      z-50 
+      flex 
+      flex-col 
+      w-10/12 
+      space-y-3 
+      -translate-x-1/2 
+      top-20 
+      left-1/2
+    `),
+    label: ctl(`
+      w-full 
+      mb-8 
+      text-xl 
+      font-semibold 
+      tracking-wider 
+      text-center 
+      text-white
+    `),
+    titleInputContainer: ctl(`
+      flex 
+      items-center 
+      justify-between 
+      space-x-2
+    `),
+    titleInput: ctl(`
+      flex-1 
+      p-4 
+      rounded 
+      focus:outline-none 
+      focus:border-2 
+      ${
+        member === "section"
+          ? `focus:border-blue-400`
+          : member === "note"
+          ? `focus:border-orange-400`
+          : member === "subNote"
+          ? `focus:border-cyan-400`
+          : ""
+      }
+    `),
+    submitButton: ctl(`
+    grid 
+    p-4 
+    text-white 
+    rounded
+    border-2 
+    place-items-center 
+    disabled:border-gray-400
+    ${
+      member === "section"
+        ? `bg-blue-600 border-blue-500 disabled:bg-gray-400`
+        : member === "note"
+        ? `bg-orange-600 border-orange-500 disabled:bg-gray-400`
+        : member === "subNote"
+        ? `bg-cyan-600 border-cyan-500 disabled:bg-gray-400`
+        : ""
+    }
+    `),
+    optionsContainer: ctl(`
+      w-full 
+      py-4 
+      pr-12 
+      space-y-4
+    `),
+    hasChildrenContainer: ctl(`
+      flex 
+      items-center 
+      justify-between 
+      space-x-4
+    `),
+    hasChildrenCheckbox: ctl(`
+      w-6 
+      h-6 
+      accent-orange-600
+    `),
+    eachOptionContainer: ctl(`
+      flex 
+      items-center 
+      justify-between 
+      space-x-4
+    `),
+    moroccoRadioLabel: ctl(`
+    ${donde === "MA" && `border-2 border-white`}
+    `),
+    ecuadorRadioLabel: ctl(`
+    ${donde === "EC" && `border-2 border-white`}
+    `),
+    abdelRadio: ctl(`
+      w-6 
+      h-6 
+      accent-blue-500
+    `),
+    belkysRadio: ctl(`
+      w-6 
+      h-6 
+      accent-pink-500
+    `),
+    moroccoRadioInput: ctl(`
+      absolute 
+      invisible 
+      w-6 
+      h-6 
+      accent-red-600
+    `),
+    ecuadorRadioInput: ctl(`
+      absolute 
+      invisible 
+      w-6 
+      h-6 
+      accent-yellow-600
+    `),
+  };
+
+  // ---- JSX
   return (
     <motion.form
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed z-50 flex flex-col w-10/12 space-y-3 -translate-x-1/2 top-20 left-1/2"
+      className={s.container}
       onSubmit={
         member === "section"
           ? addSection
@@ -113,7 +246,7 @@ function NewNote() {
           : addSubNote
       }
     >
-      <label className="w-full mb-8 text-xl font-semibold tracking-wider text-center text-white">
+      <label className={s.label}>
         {member === "section"
           ? "Nueva seccion"
           : member === "note"
@@ -123,8 +256,7 @@ function NewNote() {
           : ""}
       </label>
 
-      <section className="flex items-center justify-between space-x-2">
-        {/* //* ---- INPUT FIELD */}
+      <section className={s.titleInputContainer} title="Title input section">
         <input
           type="text"
           placeholder={
@@ -136,104 +268,83 @@ function NewNote() {
               ? "Titulo del sub tramite ..."
               : ""
           }
-          className={`flex-1 p-4 rounded focus:outline-none focus:border-2 ${
-            member === "section"
-              ? "focus:border-blue-400"
-              : member === "note"
-              ? "focus:border-orange-400"
-              : member === "subNote"
-              ? "focus:border-cyan-400"
-              : ""
-          }`}
+          className={s.titleInput}
           autoFocus
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
         />
 
-        {/* //* ---- SUBMIT BUTTON */}
         <button
+          title="Submit button"
           type="submit"
           disabled={!title || loading}
-          className={`grid p-4 text-white rounded ${
-            member === "section"
-              ? "bg-blue-600 border-blue-500 disabled:bg-gray-400"
-              : member === "note"
-              ? "bg-orange-600 border-orange-500 disabled:bg-gray-400"
-              : member === "subNote"
-              ? "bg-cyan-600 border-cyan-500 disabled:bg-gray-400"
-              : ""
-          } border-2 place-items-center disabled:border-gray-400`}
+          className={s.submitButton}
         >
           {!loading ? <MdAdd size="24px" /> : <MdNorth size="24px" />}
         </button>
       </section>
 
-      {/* //* ---- RADIO SECTION */}
-
       {member !== "section" && (
-        <section className="w-full py-4 pr-12 space-y-4 ">
-          {/* //* ---- HAS CHILDREN ---- */}
+        <section title="Options section" className={s.optionsContainer}>
           {member === "note" && (
-            <div className="flex items-center justify-between space-x-4">
+            <div title="Has children" className={s.hasChildrenContainer}>
               <p className="text-white">El tramite tiene sub tramites ?</p>
               <input
                 type="checkbox"
                 name="hasChildren"
                 id="grandChild"
-                className="w-6 h-6 accent-orange-600"
+                className={s.hasChildrenCheckbox}
                 checked={hasChildren}
-                onChange={() => setHasChildren(!hasChildren)}
+                onChange={handleCheckboxChange}
               />
             </div>
           )}
 
-          {/* //* ---- WHO ---- */}
-          <div className="flex items-center justify-between space-x-4">
+          <div title="Who" className={s.eachOptionContainer}>
             <p className="text-white">De quien es el tramite ?</p>
-            <div className="flex items-center justify-between space-x-4">
+            <div className={s.eachOptionContainer}>
               <input
                 type="radio"
                 name="who"
                 id="abdel"
                 value="Abdel"
                 checked={quien === "Abdel"}
-                className="w-6 h-6 accent-blue-500"
-                onChange={(e) => setQuien(e.target.value)}
+                className={s.abdelRadio}
+                onChange={handleQuienChange}
               />
               <input
                 type="radio"
                 name="who"
                 id="belkys"
                 value="Belkys"
-                className="w-6 h-6 accent-pink-500"
-                onChange={(e) => setQuien(e.target.value)}
+                className={s.belkysRadio}
+                onChange={handleQuienChange}
               />
             </div>
           </div>
 
-          {/* //* ---- WHERE ---- */}
-          <div className="flex items-center justify-between space-x-4">
+          <div title="Where" className={s.eachOptionContainer}>
             <p className="text-white">Donde es el tramite ?</p>
-            <div className="flex items-center justify-between space-x-4">
-              <label className={`${donde === "MA" && "border-2 border-white"}`}>
+            <div className={s.eachOptionContainer}>
+              <label className={s.moroccoRadioLabel}>
                 <Flag country={"MA"} />
                 <input
                   type="radio"
                   name="where"
                   value="MA"
                   id="MA"
-                  className="absolute invisible w-6 h-6 accent-red-600"
-                  onChange={(e) => setDonde(e.target.value)}
+                  className={s.moroccoRadioInput}
+                  onChange={handleDondeChange}
                 />
               </label>
-              <label className={`${donde === "EC" && "border-2 border-white"}`}>
+              <label className={s.ecuadorRadioLabel}>
                 <Flag country={"EC"} />
                 <input
                   type="radio"
                   name="where"
                   value="EC"
                   id="EC"
-                  className="absolute invisible w-6 h-6 accent-yellow-600"
-                  onChange={(e) => setDonde(e.target.value)}
+                  className={s.ecuadorRadioInput}
+                  onChange={handleDondeChange}
                 />
               </label>
             </div>
@@ -243,5 +354,3 @@ function NewNote() {
     </motion.form>
   );
 }
-
-export default NewNote;

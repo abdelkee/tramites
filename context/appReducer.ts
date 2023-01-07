@@ -1,4 +1,4 @@
-import { FilterArrType, FilterType, NoteType, SectionType } from "../Types";
+import { FilterArrType, NoteType, SectionType } from "../Types";
 
 export interface AppState {
     modalShow: boolean;

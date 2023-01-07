@@ -1,4 +1,3 @@
-import { SetStateAction } from "react";
 import { useSelector } from "../context/useProvider";
 import NewNote from "./NewNote";
 import Overlay from "./Overlay";
@@ -9,7 +8,7 @@ function Modal() {
   document.body.style.overflow = "hidden";
   return (
     <>
-      <Overlay show={modalShow} />
+      {modalShow && <Overlay />}
       <NewNote />
     </>
   );

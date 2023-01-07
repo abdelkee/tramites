@@ -1,30 +1,30 @@
 import { motion } from "framer-motion";
 import {
   MdAccessTime,
-  MdArrowCircleDown,
   MdAutorenew,
   MdCheckCircle,
   MdDelete,
-  MdArrowCircleUp,
-  MdAdd,
 } from "react-icons/md";
-import { NoteType } from "../Types";
 import { useState } from "react";
-import { supabase } from "../utils/supabaseClient";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "../context/useProvider";
 import { useQueryClient } from "react-query";
 import Flag from "react-flagkit";
+import ctl from "@netlify/classnames-template-literals";
+import { NoteType, SubNoteType } from "../Types";
+import { supabase } from "../utils/supabaseClient";
 
-function NoteCard({ note }: { note: NoteType }) {
-  const dispatch = useDispatch();
+type Props = {
+  note: NoteType | SubNoteType;
+  noteType: "default" | "sub";
+};
+
+export default function NoteCard({ note, noteType }: Props) {
+  // ---- HOOKS
   const queryClient = useQueryClient();
-
-  //* ---- STATES
   const [isChecked, setIsChecked] = useState(note.checked);
   const [loading, setLoading] = useState(false);
 
-  //* ---- FUNCTIONS
+  // ---- FUNCTIONS
   const toggleNote = async () => {
     setIsChecked(!isChecked);
     const { error } = await supabase
@@ -32,7 +32,13 @@ function NoteCard({ note }: { note: NoteType }) {
       .update({ checked: !note.checked })
       .eq("id", note.id);
     if (error) return alert("Error updating the note!");
-    queryClient.invalidateQueries(["notes"]);
+    queryClient.invalidateQueries(
+      noteType === "default"
+        ? ["notes"]
+        : noteType === "sub"
+        ? ["sub_notes"]
+        : []
+    );
     queryClient.invalidateQueries(["notesState"]);
   };
 
@@ -42,7 +48,13 @@ function NoteCard({ note }: { note: NoteType }) {
       const { error } = await supabase.from("todos").delete().eq("id", note.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
-      queryClient.invalidateQueries(["notes"]);
+      queryClient.invalidateQueries(
+        noteType === "default"
+          ? ["notes"]
+          : noteType === "sub"
+          ? ["sub_notes"]
+          : []
+      );
       queryClient.invalidateQueries(["notesState"]);
       setLoading(false);
     } else {
@@ -50,35 +62,114 @@ function NoteCard({ note }: { note: NoteType }) {
     }
   };
 
+  // ---- STYLES
+  const s = {
+    container: ctl(`
+      flex
+      border
+      bg-slate-50 
+      overflow-hidden 
+      z-20 
+      items-center 
+      justify-between 
+      shadow 
+      relative 
+      w-full 
+      py-4 
+      pl-6 
+      pr-4 
+      rounded-md
+      ${
+        isChecked &&
+        `
+        line-through 
+        border
+        shadow-none
+      `
+      }
+    `),
+    noteTitle: ctl(`
+      select-text 
+      w-3/4
+      ${isChecked ? `text-slate-500` : `text-slate-800`}
+    `),
+    toggleButton: ctl(`
+      grid 
+      w-10 
+      h-10 
+      bg-white 
+      rounded-full 
+      place-items-center
+      ${
+        isChecked
+          ? `
+            text-green-600 
+            border 
+            border-green-300
+          `
+          : `
+            text-orange-600 
+            border 
+            border-orage-100
+          `
+      }
+    `),
+    who: ctl(`
+      absolute 
+      -top-6 
+      left-0 
+      w-4 h-12
+      rotate-45
+      ${
+        note.who === "Abdel"
+          ? `bg-blue-400`
+          : note.who === "Belkys"
+          ? `bg-pink-400`
+          : ""
+      }
+    `),
+    where: ctl(`
+      absolute 
+      border 
+      border-gray-100 
+      left-1 
+      bottom-1  
+    `),
+    deleteButton: ctl(`
+      absolute 
+      top-0 
+      left-0 
+      z-10 
+      grid 
+      w-24 
+      h-full 
+      p-4 
+      bg-red-500 
+      border 
+      rounded-md 
+      place-items-center 
+      text-slate-50 
+      active:focus:bg-red-600 
+      disabled:bg-gray-500
+    `),
+  };
+
+  // ---- JSX
   return (
     <>
-      <div className={`relative`}>
-        {/* //* NOTE DETAILS */}
+      <div title="Wrapper" className={`relative w-full`}>
         <motion.section
+          title="Container"
           drag={"x"}
           dragConstraints={{ right: 100, left: 0 }}
-          className={`flex bg-slate-50 overflow-hidden z-20 items-center justify-between shadow relative w-full py-4 pl-6 pr-4 rounded-md ${
-            isChecked ? "line-through border shadow-none" : ""
-          }`}
+          className={s.container}
         >
-          <div className="flex items-center w-3/4 space-x-3">
-            <p
-              className={`select-text ${
-                isChecked ? "text-slate-500" : "text-slate-800"
-              }`}
-            >
-              {note.title}
-            </p>
-          </div>
+          <p className={s.noteTitle}>{note.title}</p>
 
-          {/* //* ---- TOGGLE BUTTON SECTION */}
           <button
+            title="Toggle button"
             onClick={toggleNote}
-            className={`grid w-10 h-10 bg-white rounded-full place-items-center  ${
-              isChecked
-                ? "text-green-600 border border-green-300"
-                : "text-orange-600 border border-orage-100"
-            }`}
+            className={s.toggleButton}
           >
             {isChecked ? (
               <MdCheckCircle size="24px" />
@@ -87,26 +178,16 @@ function NoteCard({ note }: { note: NoteType }) {
             )}
           </button>
 
-          {/* //* ---- WHO SECTION */}
-          <section
-            className={`absolute -top-6 left-0 w-4 h-12 ${
-              note.who === "Abdel"
-                ? "bg-blue-400"
-                : note.who === "Belkys"
-                ? "bg-pink-400"
-                : ""
-            } rotate-45`}
-          />
+          <div title="Who" className={s.who} />
 
-          {/* //* ---- WHERE SECTION */}
-          <section className="absolute border border-gray-100 left-1 bottom-1">
+          <div title="Where" className={s.where}>
             <Flag country={note.where} size={20} />
-          </section>
+          </div>
         </motion.section>
 
-        {/* //* DELETE BUTTON */}
         <button
-          className="absolute top-0 left-0 z-10 grid w-24 h-full p-4 bg-red-500 border rounded-md place-items-center text-slate-50 active:focus:bg-red-600 disabled:bg-gray-500"
+          title="Delete button"
+          className={s.deleteButton}
           onClick={deleteNote}
           disabled={loading}
         >
@@ -120,5 +201,3 @@ function NoteCard({ note }: { note: NoteType }) {
     </>
   );
 }
-
-export default NoteCard;
