@@ -1,3 +1,4 @@
+import ctl from "@netlify/classnames-template-literals";
 import { useQuery } from "react-query";
 import { useDispatch } from "../context/useProvider";
 import { SectionType } from "../Types";
@@ -28,9 +29,20 @@ export default function SectionsList() {
   if (isError) return <p className="text-center">Error ...</p>;
   if (isLoading) return <p className="text-center">Loading ...</p>;
 
+  // ---- STYLES
+  const container = ctl(`
+    flex 
+    p-4 
+    space-x-4 
+    overflow-auto 
+    mt-28 
+    scrollbar-hide 
+    max-w-md
+  `);
+
   // --- JSX ---
   return (
-    <main className="flex p-4 space-x-4 overflow-auto mt-28 scrollbar-hide ">
+    <main className={container}>
       {sections?.map((section, i) => {
         return <SectionCard key={section.id} section={section} />;
       })}

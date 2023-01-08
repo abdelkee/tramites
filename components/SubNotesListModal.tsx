@@ -60,19 +60,23 @@ export default function SubNotesList({ parentNote, setIsNoteOpen }: Props) {
       overflow-y-scroll
       bottom-0 
       left-0 
+      md:left-1/2
+      md:-translate-x-1/2
       z-40 
       flex 
       flex-col 
       items-center 
       w-full 
+      max-w-md
       px-4 
       pt-16 
       pb-12 
       mt-1 
       space-y-4 
+      scrollbar-hide
       border 
       bg-gray-50 
-      rounded-xl 
+      rounded-t-xl
       h-2/3 
       border-slate-200
 

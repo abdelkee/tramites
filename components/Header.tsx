@@ -44,11 +44,14 @@ function Header() {
       fixed 
       top-0 
       left-0 
+      md:left-1/2
+      md:-translate-x-1/2
       z-30 
       flex 
       items-center 
       justify-between 
       w-full 
+      max-w-md
       px-8 
       font-semibold 
       text-white 

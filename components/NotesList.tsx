@@ -57,9 +57,10 @@ function NotesList() {
 
   // ---- STYLES
   const sectionStyle = ctl(`
-    grid 
-    grid-cols-1 
-    gap-5 
+    flex
+    flex-col
+    space-y-5
+    items-center
     p-4 
     mt-8 
     mb-20 

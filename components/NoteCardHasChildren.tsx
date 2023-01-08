@@ -22,6 +22,7 @@ function NoteCardHasChildren({ note }: { note: NoteType }) {
       shadow 
       relative 
       w-full 
+      max-w-md
       py-4 
       pl-6 
       pr-4 
@@ -64,11 +65,9 @@ function NoteCardHasChildren({ note }: { note: NoteType }) {
   };
   return (
     <>
-      <div className={`relative`}>
+      <div className={`relative w-full`}>
         <motion.section title="Container" className={s.container}>
-          <p className={s.noteTitle}>
-            {note.title} {" 0"}
-          </p>
+          <p className={s.noteTitle}>{note.title}</p>
 
           <button
             title="Open button"

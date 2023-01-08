@@ -72,9 +72,10 @@ export default function NoteCard({ note, noteType }: Props) {
       z-20 
       items-center 
       justify-between 
-      shadow 
+      shadow
       relative 
-      w-full 
+      w-full
+      max-w-md
       py-4 
       pl-6 
       pr-4 
