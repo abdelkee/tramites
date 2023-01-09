@@ -78,7 +78,6 @@ export default function NoteCard({ note, noteType }: Props) {
       shadow
       relative 
       w-full
-      max-w-md
       py-4 
       pl-10
       pr-4 

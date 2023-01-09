@@ -22,7 +22,6 @@ function NoteCardHasChildren({ note }: { note: NoteType }) {
       shadow 
       relative 
       w-full 
-      max-w-md
       py-4 
       pl-10 
       pr-4 

@@ -37,7 +37,6 @@ export default function SectionsList() {
     overflow-auto 
     mt-28 
     scrollbar-hide 
-    max-w-md
   `);
 
   // --- JSX ---

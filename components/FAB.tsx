@@ -23,8 +23,6 @@ export default function FAB() {
     w-14 h-14 
     bottom-4 
     right-4 
-    md:right-1/2
-    md:translate-x-1/2
     bg-slate-900 
     place-items-center
   `);

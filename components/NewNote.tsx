@@ -126,7 +126,6 @@ export default function NewNote() {
       space-y-3 
       -translate-x-1/2 
       top-20 
-      max-w-md
       left-1/2
     `),
     label: ctl(`
