@@ -9,8 +9,14 @@ const getCheckedCount = async () => {
     const { data: notesStates, error: queryError } = await supabase
       .from("todos")
       .select("checked");
-    if (queryError) throw new Error("error getting notes state" + queryError);
-    return notesStates as Array<{ checked: boolean }>;
+    const { data: subNotesStates, error: subQueryError } = await supabase
+      .from("sub_todos")
+      .select("checked");
+    if (queryError || subQueryError)
+      throw new Error(
+        "error getting notes state" + queryError + " " + subQueryError
+      );
+    return [...notesStates, ...subNotesStates] as Array<{ checked: boolean }>;
   } catch (error) {
     console.log("checked count error", error);
   }

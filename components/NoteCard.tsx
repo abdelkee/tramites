@@ -28,7 +28,7 @@ export default function NoteCard({ note, noteType }: Props) {
   const toggleNote = async () => {
     setIsChecked(!isChecked);
     const { error } = await supabase
-      .from("todos")
+      .from(noteType === "default" ? "todos" : "sub_todos")
       .update({ checked: !note.checked })
       .eq("id", note.id);
     if (error) return alert("Error updating the note!");
@@ -45,7 +45,10 @@ export default function NoteCard({ note, noteType }: Props) {
   const deleteNote = async () => {
     setLoading(true);
     if (confirm("Delete this note ?")) {
-      const { error } = await supabase.from("todos").delete().eq("id", note.id);
+      const { error } = await supabase
+        .from(noteType === "default" ? "todos" : "sub_todos")
+        .delete()
+        .eq("id", note.id);
       if (error) return alert("Error deleting the note!");
       toast.success("Note deleted successfully!");
       queryClient.invalidateQueries(
@@ -77,7 +80,7 @@ export default function NoteCard({ note, noteType }: Props) {
       w-full
       max-w-md
       py-4 
-      pl-6 
+      pl-10
       pr-4 
       rounded-md
       ${

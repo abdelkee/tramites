@@ -62,7 +62,9 @@ export default function FilterForm() {
       font-semibold 
       tracking-wider 
       h-28 
-      bg-slate-600 
+      bg-gradient-to-br
+      from-slate-700
+      to-slate-500
       place-items-center 
       text-slate-50
     `),

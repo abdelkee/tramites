@@ -1,5 +1,5 @@
 import ctl from "@netlify/classnames-template-literals";
-import { MdNoteAlt } from "react-icons/md";
+import { MdNoteAdd } from "react-icons/md";
 import { useDispatch } from "../context/useProvider";
 
 export default function FAB() {
@@ -32,7 +32,7 @@ export default function FAB() {
   // ---- JSX
   return (
     <button className={container} onClick={openForm}>
-      <MdNoteAlt size="24px" />
+      <MdNoteAdd size="24px" />
     </button>
   );
 }
